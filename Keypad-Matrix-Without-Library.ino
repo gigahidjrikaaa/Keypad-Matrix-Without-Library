@@ -108,7 +108,7 @@ void loop() {
       counter[currRow][currCol] = 0;
     if (keyValue == 0){  // If the key value is NULL ('\0') then reset to the first key value.
       counter[currRow][currCol] = 0;
-      Serial.printf("Null found! Resetting. Counter: %d\n", counter[currRow][currCol]);
+      // Serial.printf("Null found! Resetting. Counter: %d\n", counter[currRow][currCol]); // For debugging only.
     }
     keyValue = oldSchoolKeys[currRow][currCol][counter[currRow][currCol]];  // Refreshes the key value
     if (keyValue == '^')  // Capslock character (assigned)
@@ -140,17 +140,16 @@ void loop() {
 
 void counterReset()
 {
-  if(millis() - resetTime > 2500)
+  if(millis() - resetTime > 2500) // If button is not pressed more than 2500 miliseconds
   {
     for(int i = 0; i < numRows; i++)
     {
       for(int j = 0; j < numCols; j++)
       {
-        counter[i][j] = 0;
+        counter[i][j] = 0;  // Reset all counters to 0;
       }
-
     }
-    displayCenter(" ",0,0);
+    displayCenter(" ",0,0); // Clear the screen
   }
 }
 
@@ -171,21 +170,22 @@ char readKeypad() {
   return '\0'; // Return null if no key is pressed
 }
 
+// Capslock function
 void capsLock()
 {
-  bool caps = 0;
+  bool caps = 0;  // Variable to know if capslock is on or off
   for(int i = 0; i < numRows; i++)
   {
     for(int j = 0; j < numCols; j++)
     {
       for(int k = 0; k < DEPTH; k++)
       {
-        if(oldSchoolKeys[i][j][k] >= 'a' && oldSchoolKeys[i][j][k] <= 'z')
+        if(oldSchoolKeys[i][j][k] >= 'a' && oldSchoolKeys[i][j][k] <= 'z')  // If capslock is off (letters are small), turn on
         {
           oldSchoolKeys[i][j][k] = oldSchoolKeys[i][j][k] - 32;
           caps = true;
         }
-        else if(oldSchoolKeys[i][j][k] >= 'A' && oldSchoolKeys[i][j][k] <= 'Z')
+        else if(oldSchoolKeys[i][j][k] >= 'A' && oldSchoolKeys[i][j][k] <= 'Z') // If capslock is on (letters are CAPITALIZED), turn off
         {
           oldSchoolKeys[i][j][k] = oldSchoolKeys[i][j][k] + 32;
           caps = false;
@@ -193,6 +193,7 @@ void capsLock()
       }
     }
   }
+  // Show 'Caps' depending on the state.
   if(caps)
     displayCenter("CAPS", 0, 0);
   if(!caps)
