@@ -31,6 +31,7 @@ void displayCenter(String text, int X, int Y) {
 
   display.clearDisplay();
   display.getTextBounds(text, 0, 0, &x1, &y1, &width, &height);
+  display.setTextSize(4);
 
   display.setCursor((SCREEN_WIDTH - width) / 2 + X, (SCREEN_HEIGHT - height) / 2 + Y);
   display.println(text);
@@ -56,7 +57,6 @@ int rowPins[numRows] = {32, 33, 25, 26};
 // Declare the last pressed and last non-null key
 char lastPressed;
 char lastNonNull;
-String word;
 
 // Define the characters for each key
 char keyMap[numRows][numCols] = {
@@ -100,9 +100,13 @@ int currRow, currCol;
 // Declare the reset time for the key press.
 int resetTime;
 
+char keyValue = 0;
+String words = "";
+bool printed = 0;
+
 void loop() {
   char keyPressed = readKeypad(); // Read the keypad and get the pressed key
-  char keyValue = oldSchoolKeys[currRow][currCol][counter[currRow][currCol]]; // Get the value of the key based on how many times pressed
+  keyValue = oldSchoolKeys[currRow][currCol][counter[currRow][currCol]]; // Get the value of the key based on how many times pressed
   if (keyPressed != '\0' && lastPressed != keyPressed) { // If key is pressed and only trigger once
     if (lastNonNull != keyPressed)  // If the last key pressed is different than the current one, reset the counter to 0.
       counter[currRow][currCol] = 0;
@@ -142,6 +146,7 @@ void counterReset()
 {
   if(millis() - resetTime > 2500) // If button is not pressed more than 2500 miliseconds
   {
+    // If the key is not pressed for more than 2500ms, reset the counter to 0.
     for(int i = 0; i < numRows; i++)
     {
       for(int j = 0; j < numCols; j++)
@@ -150,6 +155,7 @@ void counterReset()
       }
     }
     displayCenter(" ",0,0); // Clear the screen
+    resetTime = millis();
   }
 }
 
