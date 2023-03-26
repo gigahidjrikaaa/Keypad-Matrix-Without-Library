@@ -56,6 +56,7 @@ int rowPins[numRows] = {32, 33, 25, 26};
 // Declare the last pressed and last non-null key
 char lastPressed;
 char lastNonNull;
+String word;
 
 // Define the characters for each key
 char keyMap[numRows][numCols] = {
@@ -147,6 +148,7 @@ void counterReset()
       {
         counter[i][j] = 0;
       }
+
     }
     displayCenter(" ",0,0);
   }
