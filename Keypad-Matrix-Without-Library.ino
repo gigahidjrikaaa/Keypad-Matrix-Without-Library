@@ -41,9 +41,14 @@ void displayCenter(String text, int X, int Y) {
 // OLED Splash Screen
 void splashScreen()
 {
+  display.clearDisplay();
   display.setTextColor(SSD1306_WHITE);
   display.setTextSize(3);
-  displayCenter("KEYPAD MATRIX", 0, 0);
+  display.setCursor(8, 8);
+  display.print("KEYPAD");
+  display.setCursor(8, 33);
+  display.print("MATRIX");
+  display.display();
   delay(2000);
   display.clearDisplay();
 }
